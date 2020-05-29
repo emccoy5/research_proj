@@ -1,0 +1,194 @@
+
+
+import React from "react";
+import { render } from "react-dom";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/ext-language_tools"
+import Simon from "./simonSound1.mp3";
+import cLong from "./CLong.mp3";
+import eLong from "./ELong.mp3";
+import gLong from "./GLong.mp3";
+import bLong from "./B3.mp3";
+import eShort from "./shortE.mp3";
+import cShort from "./cShort.mp3";
+import bShort from "./BShort.mp3";
+import gShort from "./gShort.mp3";
+import firstLine from "./firstLine.mp3";
+import secondLine from "./seondLine.mp3";
+import thirdLine from "./thirdLine.mp3";
+import fourthLine from "./fourthLine.mp3";
+import fifthLine from "./fifthLine.mp3";
+import sixthLine from "./sixthLine.mp3";
+import lastLine from "./lastLine.mp3";
+import { StyleSheet, Text, View } from "react-native"
+
+var previousline = 0;
+
+function onChange(newValue) {
+  console.log("change", newValue);
+
+}
+
+function playAudioLine1(){
+    var short = new Audio(cShort)
+    short.play();
+    var audio = new Audio(cLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio0")
+    var line = new Audio(secondLine);
+    line.play();
+}
+
+function playAudioLine1NoChange(){
+    var audio = new Audio(cLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio0")
+    var line = new Audio(secondLine);
+    line.play();
+}
+
+function playAudioLine2(){
+    var short = new Audio(cShort)
+    short.play();
+    var audio = new Audio(cLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio0")
+    var line = new Audio(thirdLine);
+    line.play();
+}
+
+function playAudioLine2NoChange(){
+    var audio = new Audio(cLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio0")
+    var line = new Audio(thirdLine);
+    line.play();
+}
+
+function playAudio2(){
+    var short = new Audio(eShort)
+    short.play();
+    var audio = new Audio(eLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio1")
+    var line = new Audio(fourthLine);
+    line.play();
+}
+
+function playAudio3(){
+    var short = new Audio(gShort)
+    short.play();
+    var audio = new Audio(gLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio2")
+    var line = new Audio(fifthLine);
+    line.play();
+}
+
+function playAudio0(){
+    var short = new Audio(bShort)
+    short.play();
+    var audio = new Audio(bLong);
+    audio.play();
+    audio.volume = .1;
+    console.log("playing audio3")
+    var line = new Audio(firstLine);
+    line.play();
+}
+
+function playAudio1Part2(){
+    var short = new Audio(cShort)
+    short.play();
+    var audio = new Audio(cLong);
+    audio.volume = .1;
+    audio.play();
+    console.log("playing audio0")
+    var line = new Audio(sixthLine);
+    line.play();
+}
+
+function playTerminalSequence(){
+    var audio = new Audio(lastLine);
+    audio.play();
+}
+function onCursorChange(selection) {
+    const cursorPosition = selection.getCursor().row;
+    console.log(cursorPosition)
+    if (cursorPosition === 0){
+        playAudio0()
+    }
+    if (cursorPosition === 1){
+        if (previousline === 2){
+            playAudioLine1NoChange()
+        }
+        else {
+            playAudioLine1()
+        }
+    }
+    if (cursorPosition === 2){
+        if (previousline === 1){
+            playAudioLine2NoChange()
+        }
+        else {
+            playAudioLine2()
+        }
+    }
+    if (cursorPosition === 3){
+        playAudio2()
+    }
+    if (cursorPosition === 4){
+        playAudio3()
+    }
+    if (cursorPosition === 5){
+        playAudio1Part2()
+    }
+    if (cursorPosition === 6){
+        playTerminalSequence()
+    }
+
+    previousline = cursorPosition;
+  }
+
+class App extends React.Component {
+    render() {
+        return (
+            <div>
+            <View>
+                <Text style={styles.text}>Editor with Tonal Indentation</Text>
+            </View>
+            <AceEditor
+                mode="python"
+                theme="textmate"
+                onChange={onChange}
+                value={"def remove_duplicates(str): \n  unique = []\n   for char in str:\n      if char not in unique:\n            unique.append(char)\n   print(unique) \n"}
+                name="UNIQUE_ID_OF_DIV"
+                editorProps={{ $blockScrolling: true }}
+                onCursorChange = {onCursorChange}
+            />
+            
+            </div>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    text: {
+        fontWeight: "bold",
+        fontSize: 30
+    }
+})
+
+export default App
+
+
+
+
